@@ -1,0 +1,47 @@
+name: Unit Tests
+
+on:
+  push:
+    paths:
+      - '**.php'
+      - '.github/workflows/**'
+      - composer.json
+      - phpunit.xml.dist
+
+jobs:
+  ubuntu-tests:
+    name: PHPUnit Tests [PHP 8.0 - Linux]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: intl, sodium, openssl
+          coverage: xdebug
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.*') }}
+          restore-keys: |
+            composer-${{ runner.os }}-
+            composer-
+
+      - name: Setup Composer's GitHub OAuth access
+        run: composer config --global github-oauth.github.com ${{ github.token }}
+
+      - name: Install dependencies
+        run: composer update --ansi
+
+      - name: Run Unit Test Suite on ${{ runner.os }}
+        run: vendor/bin/phpunit --colors=always
