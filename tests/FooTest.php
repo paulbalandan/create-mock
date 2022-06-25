@@ -23,7 +23,7 @@ final class FooTest extends TestCase
         $foo
             ->expects($this->once())
             ->method('bar')
-            ->willReturn('foo');
+            ->willThrowException(new \Exception());
         
         $foo->__destruct();
     }
