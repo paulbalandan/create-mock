@@ -1,12 +1,8 @@
 name: Unit Tests
 
 on:
-  push:
-    paths:
-      - '**.php'
-      - '.github/workflows/**'
-      - composer.json
-      - phpunit.xml.dist
+  push: null
+  pull_request: null
 
 jobs:
   ubuntu-tests:
