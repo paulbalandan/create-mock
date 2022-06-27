@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- * 
+ *
  * @covers \App\Foo
  */
 final class FooTest extends TestCase
@@ -23,20 +23,23 @@ final class FooTest extends TestCase
         $foo
             ->expects($this->once())
             ->method('bar')
-            ->willThrowException(new \Exception());
-        
-        $foo->__destruct();
+            ->willReturn('correct');
+
+        $result = $foo->runMe();
+        $this->assertSame('correct', $result);
     }
 
     public function testBarUsingCreateMock(): void
     {
         /** @var MockObject&Foo $foo */
         $foo = $this->createMock(Foo::class);
+
         $foo
             ->expects($this->once())
             ->method('bar')
-            ->willThrowException(new \Exception());
+            ->willReturn('correct');
 
-        $foo->__destruct();
+        $result = $foo->runMe();
+        $this->assertSame('correct', $result);
     }
 }
