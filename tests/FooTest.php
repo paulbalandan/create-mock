@@ -32,7 +32,7 @@ final class FooTest extends TestCase
     public function testBarUsingCreateMock(): void
     {
         /** @var MockObject&Foo $foo */
-        $foo = $this->createMock(Foo::class);
+        $foo = $this->createPartialMock(Foo::class, ['bar']);
 
         $foo
             ->expects($this->once())
