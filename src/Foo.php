@@ -9,17 +9,8 @@ class Foo
         return get_class($this);
     }
 
-    public function baz(): void
+    public function runMe()
     {
-        $this->bar();
-    }
-
-    public function __destruct()
-    {
-        try {
-            $this->bar();
-        } catch (\Throwable) {
-            // ...
-        }
+        return $this->bar();
     }
 }
